@@ -35,4 +35,10 @@ export class UsersService {
     user.role = newRole;
     return await this.userRepository.save(user);
   }
+
+  async setRefreshToken(token: string, username: string) {
+    const user = await this.findUserWithUsername(username);
+    user.refreshToken = await bcrypt.hash(token, await bcrypt.genSalt());
+    return await this.userRepository.save(user);
+  }
 }

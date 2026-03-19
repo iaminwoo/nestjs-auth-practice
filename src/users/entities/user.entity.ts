@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from '../../common/enum';
 
 @Entity()
@@ -14,4 +14,7 @@ export class User {
 
   @Column({ default: Role.User })
   role: Role;
+
+  @Column({ nullable: true })
+  refreshToken: string;
 }

@@ -3,6 +3,7 @@ import {
   Get,
   Patch,
   Post,
+  Req,
   Request,
   Res,
   UseGuards,
@@ -10,8 +11,9 @@ import {
 import type { Response } from 'express';
 import { Public, Roles } from 'src/common/decorator';
 import { Role } from 'src/common/enum';
-import type { RequestWithUser } from 'src/common/types';
+import type { RefreshUser, RequestWithUser } from 'src/common/types';
 import { AuthService } from './auth.service';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @Controller('auth')
@@ -45,5 +47,19 @@ export class AuthController {
   @Roles(Role.Admin)
   onlyAdmin() {
     return 'Only Admin';
+  }
+
+  @Public()
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  refresh(
+    @Req() req: { user: RefreshUser },
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return this.authService.refreshAccessToken(
+      req.user.username,
+      req.user.refreshToken,
+      res,
+    );
   }
 }

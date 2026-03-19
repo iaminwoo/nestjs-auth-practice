@@ -7,6 +7,10 @@ export interface AuthUser {
   role: Role;
 }
 
+export interface RefreshUser extends AuthUser {
+  refreshToken: string;
+}
+
 export interface RequestWithUser extends Request {
   user: AuthUser;
 }
