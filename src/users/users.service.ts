@@ -41,4 +41,8 @@ export class UsersService {
     user.refreshToken = await bcrypt.hash(token, await bcrypt.genSalt());
     return await this.userRepository.save(user);
   }
+
+  async removeRefreshToken(id: number) {
+    return this.userRepository.update(id, { refreshToken: null });
+  }
 }

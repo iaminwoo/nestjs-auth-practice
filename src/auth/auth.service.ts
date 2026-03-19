@@ -103,4 +103,8 @@ export class AuthService {
       res,
     );
   }
+
+  async logout(id: number) {
+    await this.userService.removeRefreshToken(id);
+  }
 }
